@@ -3,6 +3,12 @@ import { render, screen } from "@testing-library/react";
 
 vi.mock("@tanstack/react-start", () => ({
   useServerFn: () => async () => ({ available: true }),
+  createServerFn: () => ({ middleware: () => ({ inputValidator: () => ({ handler: () => async () => null }), inputValidator: () => ({ handler: () => async () => null }), handler: () => async () => null }) }),
+  createMiddleware: () => ({ server: () => ({}), client: () => ({}) }),
+}));
+vi.mock("@/lib/links.functions", () => ({
+  createLink: async () => null,
+  checkSlug: async () => ({ available: true }),
 }));
 vi.mock("@tanstack/react-router", () => ({
   Link: ({ children }: any) => <>{children}</>,
