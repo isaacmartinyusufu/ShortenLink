@@ -14,7 +14,113 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      clicks: {
+        Row: {
+          browser: string | null
+          country: string | null
+          created_at: string
+          device: string | null
+          id: string
+          link_id: string
+          os: string | null
+          referrer: string | null
+          user_agent: string | null
+        }
+        Insert: {
+          browser?: string | null
+          country?: string | null
+          created_at?: string
+          device?: string | null
+          id?: string
+          link_id: string
+          os?: string | null
+          referrer?: string | null
+          user_agent?: string | null
+        }
+        Update: {
+          browser?: string | null
+          country?: string | null
+          created_at?: string
+          device?: string | null
+          id?: string
+          link_id?: string
+          os?: string | null
+          referrer?: string | null
+          user_agent?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "clicks_link_id_fkey"
+            columns: ["link_id"]
+            isOneToOne: false
+            referencedRelation: "links"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      links: {
+        Row: {
+          created_at: string
+          created_ip: string | null
+          expired: boolean
+          expires_at: string | null
+          id: string
+          original_url: string
+          qr_bg: string
+          qr_fg: string
+          qr_level: string
+          slug: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          created_ip?: string | null
+          expired?: boolean
+          expires_at?: string | null
+          id?: string
+          original_url: string
+          qr_bg?: string
+          qr_fg?: string
+          qr_level?: string
+          slug: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          created_ip?: string | null
+          expired?: boolean
+          expires_at?: string | null
+          id?: string
+          original_url?: string
+          qr_bg?: string
+          qr_fg?: string
+          qr_level?: string
+          slug?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          display_name: string | null
+          email: string | null
+          id: string
+        }
+        Insert: {
+          created_at?: string
+          display_name?: string | null
+          email?: string | null
+          id: string
+        }
+        Update: {
+          created_at?: string
+          display_name?: string | null
+          email?: string | null
+          id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
