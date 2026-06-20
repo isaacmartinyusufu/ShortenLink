@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { Link as RLink } from "@tanstack/react-router";
-import { Copy, Check, Loader2, Sparkles } from "lucide-react";
+import { Copy, Check, Loader2, Sparkles, Scissors } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -173,14 +173,10 @@ export function ShortenForm() {
           </div>
         </div>
         <Button type="submit" disabled={submitting} className="w-full h-12 text-base">
-          {submitting ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Scissors />}
+          {submitting ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Scissors className="w-4 h-4 mr-2" />}
           Shorten URL
         </Button>
       </form>
     </Card>
   );
-}
-
-function Scissors() {
-  return null;
 }
