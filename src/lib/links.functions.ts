@@ -195,7 +195,12 @@ export const updateLink = createServerFn({ method: "POST" })
       .parse(d),
   )
   .handler(async ({ data, context }) => {
-    const patch: Record<string, unknown> = {};
+    const patch: {
+      qr_fg?: string;
+      qr_bg?: string;
+      qr_level?: string;
+      expires_at?: string | null;
+    } = {};
     if (data.qrFg !== undefined) patch.qr_fg = data.qrFg;
     if (data.qrBg !== undefined) patch.qr_bg = data.qrBg;
     if (data.qrLevel !== undefined) patch.qr_level = data.qrLevel;

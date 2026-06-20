@@ -1,4 +1,3 @@
-// Redirect handler for short links. Records a click, then 302s.
 import { createFileRoute } from "@tanstack/react-router";
 import { UAParser } from "ua-parser-js";
 
@@ -63,7 +62,6 @@ export const Route = createFileRoute("/$slug")({
           });
         }
 
-        // Record click (fire-and-forget; do not block the redirect).
         try {
           const ua = request.headers.get("user-agent") ?? "";
           const referrer = request.headers.get("referer") ?? null;
@@ -90,10 +88,7 @@ export const Route = createFileRoute("/$slug")({
 
         return new Response(null, {
           status: 302,
-          headers: {
-            location: link.original_url,
-            "cache-control": "no-store",
-          },
+          headers: { location: link.original_url, "cache-control": "no-store" },
         });
       },
     },
