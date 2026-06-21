@@ -30,9 +30,13 @@ export function ShortenForm() {
 
   const createFn = useServerFn(createLink);
   const checkFn = useServerFn(checkSlug);
-  const origin = typeof window !== "undefined" ? window.location.origin : "";
+  const [origin, setOrigin] = useState("");
 
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    setOrigin(window.location.origin);
+  }, []);
   useEffect(() => {
     if (!slug) return setSlugStatus({ state: "idle" });
     const v = validateSlug(slug);
@@ -42,7 +46,9 @@ export function ShortenForm() {
     debounceRef.current = setTimeout(async () => {
       try {
         const res = await checkFn({ data: { slug } });
-        setSlugStatus(res.available ? { state: "ok" } : { state: "err", msg: res.reason ?? "Taken" });
+        setSlugStatus(
+          res.available ? { state: "ok" } : { state: "err", msg: res.reason ?? "Taken" },
+        );
       } catch {
         setSlugStatus({ state: "idle" });
       }
@@ -155,7 +161,9 @@ export function ShortenForm() {
                 <span className="text-muted-foreground">Checking…</span>
               )}
               {slugStatus.state === "ok" && <span className="text-success">Available</span>}
-              {slugStatus.state === "err" && <span className="text-destructive">{slugStatus.msg}</span>}
+              {slugStatus.state === "err" && (
+                <span className="text-destructive">{slugStatus.msg}</span>
+              )}
             </p>
           </div>
           <div className="space-y-2">
@@ -173,7 +181,11 @@ export function ShortenForm() {
           </div>
         </div>
         <Button type="submit" disabled={submitting} className="w-full h-12 text-base">
-          {submitting ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Scissors className="w-4 h-4 mr-2" />}
+          {submitting ? (
+            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+          ) : (
+            <Scissors className="w-4 h-4 mr-2" />
+          )}
           Shorten URL
         </Button>
       </form>

@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
-import { lovable } from "@/integrations/lovable/index";
+import { signInWithGoogle } from "@/lib/firebaseAuth";
 
 const searchSchema = z.object({ mode: z.enum(["signin", "signup"]).optional() });
 
@@ -54,16 +54,20 @@ function AuthPage() {
 
   async function google() {
     setBusy(true);
-    const res = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: window.location.origin + "/dashboard",
-    });
-    if (res.error) {
-      toast.error(res.error.message ?? "Google sign-in failed");
+
+    try {
+      await signInWithGoogle();
+
+      toast.success("Signed in successfully!");
+
+      navigate({
+        to: "/dashboard",
+      });
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Google sign-in failed");
+    } finally {
       setBusy(false);
-      return;
     }
-    if (res.redirected) return;
-    navigate({ to: "/dashboard" });
   }
 
   return (
@@ -95,7 +99,13 @@ function AuthPage() {
           <form onSubmit={onSubmit} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
+              <Input
+                id="email"
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
             </div>
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
@@ -118,7 +128,13 @@ function AuthPage() {
               <span className="bg-card text-xs text-muted-foreground px-2">or</span>
             </span>
           </div>
-          <Button type="button" variant="outline" className="w-full" onClick={google} disabled={busy}>
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full"
+            onClick={google}
+            disabled={busy}
+          >
             <GoogleIcon /> Continue with Google
           </Button>
         </Card>

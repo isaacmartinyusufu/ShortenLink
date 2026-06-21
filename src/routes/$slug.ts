@@ -50,8 +50,7 @@ export const Route = createFileRoute("/$slug")({
           });
         }
         const isExpired =
-          link.expired ||
-          (link.expires_at && new Date(link.expires_at).getTime() < Date.now());
+          link.expired || (link.expires_at && new Date(link.expires_at).getTime() < Date.now());
         if (isExpired) {
           if (!link.expired) {
             await supabaseAdmin.from("links").update({ expired: true }).eq("id", link.id);
